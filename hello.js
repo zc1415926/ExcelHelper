@@ -13,7 +13,7 @@ var getClassRegExp = new RegExp(/[0-9]*/); //获取文件名中班级号码的�
 var fileNameArray = filename.split("-"); //获取文件名使用”-“分割的的数组
 
 var sourceData = obj[0]['data'];
-var exportData = [["学号", "入学年度", "年级", "班级", "姓名", "密码", "性别", "家庭住址", "联系电话", "家长姓名", "班主任"]];
+var exportData = [["学号", "入学年度", "年级", "班级", "姓名", "密码", "性别", "家庭住址", "学籍号", "家长姓名", "班主任"]];
 
 var classNum = fileNameArray[1].match(getClassRegExp)[0];
 //console.log(classNum);//输出获取的班级号码
@@ -34,7 +34,7 @@ for (var stuOrderNum = 1; stuOrderNum < stuOrderNumMax; stuOrderNum++) {
         "123456",                                   //密码
         sourceData[stuOrderNum][4],                 //性别
         "地球",
-        "12345678912",
+        sourceData[stuOrderNum][0],                 //学籍号
         "家长",
         "班主任"
     ]);
