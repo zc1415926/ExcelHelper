@@ -1,7 +1,7 @@
 /**
  * Created by zc1415926 on 2016/1/18.
  */
-var shell = require("shelljs");
+//var shell = require("shelljs");
 var xlsx = require('node-xlsx');
 var fs = require('fs');
 
@@ -41,5 +41,6 @@ for (var stuOrderNum = 1; stuOrderNum < stuOrderNumMax; stuOrderNum++) {
 }
 
 //console.log(exportData);
+//TODO:如果文件名中有"./“这种则就适应文件名
 var exportObj = xlsx.build([{name: "worksheet", data: exportData}], {bookType: 'xlsx'});
 fs.writeFileSync('export_' + filename + "x" , exportObj, 'binary');
