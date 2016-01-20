@@ -1,7 +1,8 @@
 {
   "name": "covert-xj-to-xkw",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "把学籍表转换成学科网导入的数据格式",
+  "repository": "https://github.com/zc1415926/covert-xj-to-xkw",
   "main": "hello.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,6 +12,7 @@
   "dependencies": {
     "fs": "0.0.2",
     "node-xlsx": "^0.6.0",
-    "shelljs": "^0.5.3"
+    "shelljs": "^0.5.3",
+    "yargs": "^3.32.0"
   }
 }
