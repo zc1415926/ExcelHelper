@@ -1,26 +1,39 @@
 /**
  * Created by zc1415926 on 2016/1/18.
  */
-//var shell = require("shelljs");
+var shell = require("shelljs");
 var xlsx = require('node-xlsx');
+//node内置库
 var fs = require('fs');
 
-var filename = process.argv[2];
+//从参数2中获得Excel文件的过程路径
+var filePath = process.argv[2];
 
-var obj = xlsx.parse(filename);
+//获取不带路径的纯文件名
+var pureFileName = filePath.split('\\')[filePath.split('\\').length -1];
+//文件导出路径为源文件所在目录
+var outputPath = filePath.replace(pureFileName, "");
+//获取纯文件名使用”-“分割的的数组，如从2010-12.xls中分出“2010”和“12.xls”
+var fileNameArray = pureFileName.split("-");
+//获取文件名中班级号码，如从“12.xls”中取得数字部分
+var getClassRegExp = new RegExp(/[0-9]*/);
+var classNum = fileNameArray[1].match(getClassRegExp)[0];
 
-var getClassRegExp = new RegExp(/[0-9]*/); //获取文件名中班级号码的正则表达式
-var fileNameArray = filename.split("-"); //获取文件名使用”-“分割的的数组
 
-var sourceData = obj[0]['data'];
+//解析Excel文件
+var xlsxObject = xlsx.parse(filePath);
+//获取源数据
+var sourceData = xlsxObject[0]['data'];
+//构建目标数据表头
 var exportData = [["学号", "入学年度", "年级", "班级", "姓名", "密码", "性别", "家庭住址", "学籍号", "家长姓名", "班主任"]];
 
-var classNum = fileNameArray[1].match(getClassRegExp)[0];
-//console.log(classNum);//输出获取的班级号码
+
 var stuId = "";
-var stuOrderNumMax = sourceData.length;//最后一行的行号
+//最后一行的行号
+var stuOrderNumMax = sourceData.length;
 
 for (var stuOrderNum = 1; stuOrderNum < stuOrderNumMax; stuOrderNum++) {
+    //学生的学号=入学年份+班级号码（如是个位数，则前边补“0”）+学生序号（如是个位数，则前边补“0”）
     stuId = fileNameArray[0]
         + (classNum.length < 2 ? "0" + classNum.length : classNum.length)
         + (stuOrderNum < 10 ? "0" + stuOrderNum : stuOrderNum);
@@ -33,14 +46,17 @@ for (var stuOrderNum = 1; stuOrderNum < stuOrderNumMax; stuOrderNum++) {
         sourceData[stuOrderNum][1],                 //姓名
         "123456",                                   //密码
         sourceData[stuOrderNum][4],                 //性别
-        "地球",
+        "地球",                                     //家庭住址
         sourceData[stuOrderNum][0],                 //学籍号
-        "家长",
-        "班主任"
+        "家长",                                     //家长姓名
+        "班主任"                                    //班主任
     ]);
 }
 
-//console.log(exportData);
-//TODO:如果文件名中有"./“这种则就适应文件名
+
+//TODO:如果文件名中有"./“这种则就适应文件名，不过有可能在Linux下用吗？？？
+//导出目标数据到文件
 var exportObj = xlsx.build([{name: "worksheet", data: exportData}], {bookType: 'xlsx'});
-fs.writeFileSync('export_' + filename + "x" , exportObj, 'binary');
+fs.writeFileSync('export_' + pureFileName + "x" , exportObj, 'binary');
+//将导出文件移动到导出路径
+shell.mv('export_' + pureFileName + "x", outputPath);
