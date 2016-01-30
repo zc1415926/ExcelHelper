@@ -2,9 +2,9 @@
  * Created by ZC on 2016/1/29.
  */
 var shell = require('shelljs');
-var resizer = require('./image-resizer');
-var renamer = require('./file-renamer');
-var transformer = require('./excel-transformer');
+var resizer = require('./commands/image-resizer');
+var renamer = require('./commands/file-renamer');
+var transformer = require('./commands/excel-transformer');
 
 var argv = require('yargs')
     .command('rename', 'rename files referencing the excel file', function(yargs){
