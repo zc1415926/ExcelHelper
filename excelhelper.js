@@ -15,8 +15,8 @@ var argv = require('yargs')
                 type: 'string',
                 describe: 'Full path of the reference Excel file.'
             })
-            .option('p', {
-                alias: 'photo',
+            .option('d', {
+                alias: 'dir',
                 demand: true,
                 type: 'string',
                 describe: 'Directory path in which your photos contain.'
@@ -27,7 +27,7 @@ var argv = require('yargs')
                 describe: 'How width do you want to resize to.(Ratio keeping)'
             })
             .check(function(argvs, arr){
-                if(argvs.excel == "" || argvs.photo == "")
+                if(argvs.excel == "" || argvs.dir == "")
                 {
                     throw new Error('Error with your params, please check.\n' +
                         'Or you can get help by using "-h" param.\n');
@@ -36,9 +36,9 @@ var argv = require('yargs')
                 {
                     throw new Error('The path "' + argvs.excel + '" is not a file.');
                 }
-                else if(!shell.test('-d', argvs.photo))
+                else if(!shell.test('-d', argvs.dir))
                 {
-                    throw new Error('The path "' + argvs.photo + '" is not a directory.');
+                    throw new Error('The path "' + argvs.dir + '" is not a directory.');
                 }
                 else if(argvs.width == "")
                 {
@@ -57,12 +57,12 @@ var argv = require('yargs')
 
         if(argv.width)
         {
-            resizer.resize(argv.photo, argv.width);
-            renamer.rename(argv.excel, argv.photo);
+            resizer.resize(argv.dir, argv.width);
+            renamer.rename(argv.excel, argv.dir);
         }
         else
         {
-            renamer.rename(argv.excel, argv.photo);
+            renamer.rename(argv.excel, argv.dir);
         }
 
     })
