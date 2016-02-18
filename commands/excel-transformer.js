@@ -15,8 +15,6 @@ function transform(filePath, destDir)
     var xlsxObject = xlsx.parse(filePath);
     //获取源数据
     var sourceData = xlsxObject[0]['data'];
-    //构建目标数据表头
-    var exportData = [["学号", "入学年度", "年级", "班级", "姓名", "密码", "性别", "家庭住址", "学籍号", "家长姓名", "班主任"]];
 
 
     var progressBar = new progress('Transforming: [:bar] :percent', {
@@ -24,19 +22,25 @@ function transform(filePath, destDir)
         total: sourceData.length});
 
 
+
     //获取不带路径的纯文件名
     var pureFileName = filePath.split('\\')[filePath.split('\\').length -1];
+    //构建导出文件的文件名，目前只能导出xlsx文件
+    var outputFileName = 't_' + pureFileName + 'x';
+
+    //构建目标数据表头
+    var exportData = [["学号", "入学年度", "年级", "班级", "姓名", "密码", "性别", "家庭住址", "学籍号", "家长姓名", "班主任"]];
+
+    /**
+     * 以下是构建表内数据部分
+     * */
     //获取纯文件名使用”-“分割的的数组，如从2010-12.xls中分出“2010”和“12.xls”
     var fileNameArray = pureFileName.split("-");
     //获取文件名中班级号码，如从“12.xls”中取得数字部分
     var getClassRegExp = new RegExp(/[0-9]*/);
     var classNum = fileNameArray[1].match(getClassRegExp)[0];
 
-
-    //目前只能导出xlsx文件
-    var outputFileName = 't_' + pureFileName + 'x';
-
-
+    //通过计算得到学号
     var stuId = "";
     //最后一行的行号
     var stuOrderNumMax = sourceData.length;
