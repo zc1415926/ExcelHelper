@@ -19,12 +19,12 @@ var argv = require('yargs')
                 alias: 'dir',
                 demand: true,
                 type: 'string',
-                describe: 'Directory path in which your photos contain.'
+                describe: 'Directory path in which your files contain.'
             })
             .option('w', {
                 alias: 'width',
                 type: 'string',
-                describe: 'How width do you want to resize to.(Ratio keeping)'
+                describe: 'How width do you want your photos to resize to.(Ratio keeping)'
             })
             .check(function(argvs, arr){
                 if(argvs.excel == "" || argvs.dir == "")
