@@ -48,13 +48,13 @@ function transform(filePath, destDir)
     for (var stuOrderNum = 1; stuOrderNum < stuOrderNumMax; stuOrderNum++) {
         //学生的学号=入学年份+班级号码（如是个位数，则前边补“0”）+学生序号（如是个位数，则前边补“0”）
         stuId = fileNameArray[0]
-            + (classNum.length < 2 ? "0" + classNum.length : classNum.length)
+            + (classNum.length < 2 ? "0" + classNum : classNum)
             + (stuOrderNum < 10 ? "0" + stuOrderNum : stuOrderNum);
 
         exportData.push([
             stuId,                                      //学号
             fileNameArray[0],                           //入学年入学
-            (2016 - fileNameArray[0] - 1).toString(),   //年级
+            (2016 - fileNameArray[0]).toString(),   //年级
             classNum,                                   //班级
             sourceData[stuOrderNum][1],                 //姓名
             "123456",                                   //密码
