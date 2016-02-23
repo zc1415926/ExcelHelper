@@ -47,8 +47,8 @@ var argv = require('yargs')
 
                 return true;
             })
-            .usage('\nUsage: excelhelper rename -e [ExcelFilePath] -p [PhotoDirctory]')
-            .example('params -e X:\\path\\myExcel.xls -p X:\\dirctory\\photos')
+            .usage('\nUsage: excelhelper rename -e [ExcelFilePath] -d [PhotoDirctory]')
+            .example('params -e X:\\path\\myExcel.xls -d X:\\dirctory\\photos')
             .epilog('Made by zc1415926, \n' +
                 'Find more at https://github.com/zc1415926/covert-xj-to-xkw')
             .help('h')
