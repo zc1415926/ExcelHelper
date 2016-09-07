@@ -29,43 +29,64 @@ function transform(filePath, destDir)
     var outputFileName = 't_' + pureFileName + 'x';
 
     //构建目标数据表头
-    var exportData = [["学号", "入学年度", "年级", "班级", "姓名", "密码", "性别", "家庭住址", "学籍号", "家长姓名", "班主任"]];
+    var exportData = [["年级", "班级", "课程", "教师", "星期", "节次"]];
 
-    /**
-     * 以下是构建表内数据部分
-     * */
-    //获取纯文件名使用”-“分割的的数组，如从2010-12.xls中分出“2010”和“12.xls”
-    var fileNameArray = pureFileName.split("-");
-    //获取文件名中班级号码，如从“12.xls”中取得数字部分
-    var getClassRegExp = new RegExp(/[0-9]*/);
-    var classNum = fileNameArray[1].match(getClassRegExp)[0];
-
-    //通过计算得到学号
-    var stuId = "";
-    //最后一行的行号
     var stuOrderNumMax = sourceData.length;
 
-    for (var stuOrderNum = 1; stuOrderNum < stuOrderNumMax; stuOrderNum++) {
-        //学生的学号=入学年份+班级号码（如是个位数，则前边补“0”）+学生序号（如是个位数，则前边补“0”）
-        stuId = fileNameArray[0]
-            + (classNum.length < 2 ? "0" + classNum : classNum)
-            + (stuOrderNum < 10 ? "0" + stuOrderNum : stuOrderNum);
+    for (var stuOrderNum = 2; stuOrderNum < stuOrderNumMax; stuOrderNum++) {
 
-        exportData.push([
-            stuId,                                      //学号
-            fileNameArray[0],                           //入学年入学
-            (2016 - fileNameArray[0]).toString(),   //年级
-            classNum,                                   //班级
-            sourceData[stuOrderNum][1],                 //姓名
-            "123456",                                   //密码
-            sourceData[stuOrderNum][4],                 //性别
-            "地球",                                     //家庭住址
-            sourceData[stuOrderNum][0],                 //学籍号
-            "家长",                                     //家长姓名
-            "班主任"                                    //班主任
-        ]);
+        //console.log(sourceData[stuOrderNum][0]);
 
-        progressBar.tick();
+
+
+        for(var j = 1; j < sourceData[stuOrderNum].length; j++){
+            if(sourceData[stuOrderNum][j]){
+                var subjectGradeClassArray = sourceData[stuOrderNum][j].split('\n');
+              //  .
+
+                var gradeClassArray = subjectGradeClassArray[1].split('.');
+
+                var gradeData = '';
+                switch (gradeClassArray[0]){
+                    case '1':
+                        gradeData = '一年级';
+                        break;
+                    case '2':
+                        gradeData = '二年级';
+                        break;
+                    case '3':
+                        gradeData = '三年级';
+                        break;
+                    case '4':
+                        gradeData = '四年级';
+                        break;
+                    case '5':
+                        gradeData = '五年级';
+                        break;
+                    case '6':
+                        gradeData = '六年级';
+                        break;
+                    default:
+
+                }
+
+                var classData = gradeClassArray[1].replace('(', '').replace(')', '');
+
+                //星期
+                //console.log(sourceData[0][j]);
+
+                exportData.push([
+                    gradeData,
+                    classData,
+                    subjectGradeClassArray[0],
+                    sourceData[stuOrderNum][0],
+                    sourceData[0][j],
+                    sourceData[1][j],]);
+            }
+        }
+
+
+        //progressBar.tick();
     }
 
 
