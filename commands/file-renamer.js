@@ -39,15 +39,15 @@ function rename(excelFilePath, dirPath)
         renameToFileName = sourceData[i][COL_NUM_RENAME_TO];
 
         //使用原文件名ls命令列出文件列表
-        filesListArray = shell.ls(originFileName+"*");
+        filesListArray = shell.ls("*"+originFileName+"*");
 
         //如果当前文件夹中存在某个文件，包含当前原文件名，则对该文件进行重命名操作
         //TODO:处理有重复的情况，比如两个文件“张川（大）.jpg”和“张川（小）.jpg”在原文件名为“张川”时就会出现这个情况，这里的假定没有学生图片重名
-        if(filesListArray.length >0)
+        if(filesListArray.length == 1)
         {
             extension = filesListArray[0].split('.')[1];
 
-            shell.mv('-f', originFileName + "." + extension, renameToFileName + "." + extension );
+            shell.mv('-f', filesListArray[0], renameToFileName + "." + extension );
         }
         else
         {
